@@ -3,6 +3,8 @@
 # PHPH 618
 # Problem Set 1
 
+set.seed(88)
+
 library(magrittr)
 
 setwd("~/SoftwareProjects/PHPH618/src")
@@ -13,12 +15,12 @@ binding_data <- read.csv("../data/problem_set_1.csv")
 plot(log2(binding_data$ligand_nM),binding_data$fraction_bound)
 
 # create model of the form Y = (1)x + (2)x^2 + (3)x^3 + (Intercept)
-nonlinear_model <- lm(binding_data$fraction_bound ~ poly(log2(binding_data$ligand_nM),3))
+nonlinear_model <- lm(binding_data$fraction_bound ~ poly(log2(binding_data$ligand_nM),3,raw = TRUE))
 
-# (1) = 1.45977
-# (2) = 0.29031
-# (3) = -0.33380
-# (Intercept) = 0.40073
+# (1) = 0.0281644
+# (2) = 0.0170429
+# (3) = -0.0010036
+# (Intercept) = -0.0561749
 # Adjusted R-squared:  0.9719
 nonlinear_model %>% summary()
 
@@ -29,16 +31,17 @@ lines(log2(binding_data$ligand_nM),predict(nonlinear_model))
 half_max <- max(binding_data$fraction_bound) / 2
 half_max_r <- round(half_max,digits = 3)
 
-# 0.4925 = 1.45977x + 0.29031x^2 + -0.33380x^3 + 0.40073
+# 0.4925 = 0.0281644x + 0.0170429x^2 + -0.0010036x^3 + -0.0561749
 library(polynom)
-pnom <- polynomial(c(0.40073,1.45977,0.29031,-0.33380))
+pnom <- polynomial(nonlinear_model$coefficients)
+
 pnom
 
-# -1.73781250  0.06215273  2.54537217
+# -5.583139  5.862778 16.701541
 solve(pnom,b=half_max)
 
 # unlog Kd
-Kd <- 2^2.54537217
+Kd <- 5.862778
 Kd_r <- round(Kd,digits = 3)
 
 abline(h=half_max)

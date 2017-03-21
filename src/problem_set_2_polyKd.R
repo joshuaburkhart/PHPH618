@@ -43,7 +43,7 @@ solve(pnom,b=half_max)
 
 # unlog Kd
 log10Kd_r <- (1.8704424+0i)
-Kd <- 2^log10Kd_r
+Kd <- 10^log10Kd_r
 Kd_r <- round(Kd,digits = 3)
 
 abline(h=half_max)

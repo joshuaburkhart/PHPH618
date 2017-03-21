@@ -14,8 +14,14 @@ binding_data <- read.csv("../data/problem_set_2.csv")
 # log plot
 plot(log10(binding_data$ligand_uM),binding_data$fraction_bound)
 
+# 1.2   2.5   5.2  10.5  21.1  42.1  73.2 111.3 185.5 256.9 325.7 392.0
+binding_data$ligand_uM
+
+# 0.00 0.01 0.02 0.03 0.04 0.15 0.42 0.80 0.97 1.00 1.01 0.99
+binding_data$fraction_bound
+
 L  <- binding_data$ligand_uM
-Kd.init.guess <- 1 # any number works...
+Kd.init.guess <- 60
 Fb  <- binding_data$fraction_bound
 
 # fitting equation
@@ -47,14 +53,14 @@ title(paste("Half-Max = ",half_max_r,", Kd = 10^",log10Kd_r," = ",Kd_r,sep=""))
 
 # Hill Equation (based on https://github.com/dritoshi/Fitting-Hill-equation/blob/master/bin/hill.r)
 L  <- binding_data$ligand_uM
-n.init <- 1 # any number works...
+n.init.guess <- 1
 Fb  <- binding_data$fraction_bound
 
 # initial
 
 
 # fitting Hill equation
-nonlinear_hill_model <- nls(Fb ~ (L^n / (Kd + L^n)), start = c(n = n.init))
+nonlinear_hill_model <- nls(Fb ~ (L^n / (Kd + L^n)), start = c(n = n.init.guess))
 
 #Formula: Fb ~ (L^n/(Kd + L^n))
 #Parameters:

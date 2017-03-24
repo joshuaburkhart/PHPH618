@@ -42,7 +42,7 @@ lines(log10(binding_data$ligand_uM),predict(nonlinear_model2))
 half_max <- max(binding_data$fraction_bound) / 2
 half_max_r <- round(half_max,digits = 3)
 
-# log10 Kd for plotting
+# log10 Ka for plotting
 Ka <- nonlinear_model2 %>% summary() %>% coefficients() %>% .[1]
 Ka_r <- round(Ka,digits = 3)
 log10Ka_r <- round(log10(Ka),3)
